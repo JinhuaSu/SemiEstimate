@@ -83,9 +83,9 @@ new_diyjac <- function(...) {
         )
 }
 
-get_subclass <- function(method, jac_class){
-        first <- method == "iterative" ? "IT" else "IP"
-        second <- class(jac_class) == "diyjac" ? "HM" else "AT"
+get_subclass <- function(method, jac_class) {
+        first <- method == "iterative" ? "IT":"IP"
+        second <- class(jac_class) == "diyjac" ? "HM":"AT"
         paste(first, second)
 }
 
