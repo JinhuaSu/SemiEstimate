@@ -1,11 +1,14 @@
-# With reset=TRUE, unload and reload the package for a clean start
-load_all("./", TRUE)
-
-semi_solve()
+## semi_solve()
 
 # =====================================
 # ======= z = x^2 + y^2 + alpha xy=====
 # =====================================
+# test simple jac
+Phi_fn <- function(theta, lambda, alpha) 2 * theta + alpha * lambda
+
+Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
+
+semislv(0, 0, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", jacobian = TRUE, alpha = 1)
 
 Newton <- function(beta0, alpha) {
         H_GS <- matrix(c(2, alpha, alpha, 2), nrow = 2, ncol = 2)

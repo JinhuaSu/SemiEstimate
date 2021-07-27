@@ -12,6 +12,22 @@ there are different small function to modify it
 
 function factory + s3
 
+## Todo list
+
+2021.7.26
+
+- read R package and run a simple package pick
+- remove the unessary part of my package and run it
+- add more nessary part for meta test
+- change the case into the my package wrapper
+- debugging
+  - use do.call to replace the all the ellipsis
+  - think about a tiny structure to refract the current the code
+
+https://stackoverflow.com/questions/30283389/packing-and-unpacking-elements-from-list-in-r
+
+finding a useful method for realizing the two part: (1) mget (2) list2env (3) ellipsis(The ellipsis is a powerful tool for extending functions. Unfortunately this power comes at a cost: misspelled arguments will be silently ignored. The ellipsis package provides a collection of functions to catch problems and alert the user.)
+
 ## usage
 
 a function:

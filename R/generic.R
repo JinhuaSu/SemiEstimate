@@ -1,6 +1,6 @@
 
 update <- function(iterspace) {
-        UseMethod(update)
+        UseMethod("update")
 }
 
 small_update <- function(vec, tol) {
@@ -35,15 +35,25 @@ update.iterspace.ITHM <- function(iterspace) {
         return(small_update(iterapce$update_delta$theta, iterspace$tol) && small_update(iterapce$update_delta$lambda, iterspace$tol))
 }
 
+# TODO: parameters -> iterspace$parameters
+
 update.iterspace.IPAT <- function(iterspace) {
-        Phi <- iterspace$eqfns$Phi_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!parameters)
-        Phi_der_theta <- iterspace$jac_like$Phi_der_theta_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!parameters)
-        Phi_der_lambda <- iterspace$jac_like$Phi_der_lambda_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!parameters)
-        Psi_der_theta <- iterspace$jac_like$Psi_der_theta_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!parameters)
+        args <- rlang::dots_list(!!!iterspace$parameters, !!!iterspace$initials, .homonyms = "first")
+        args_short <- args[names(formals(Phi_fn))] # purrr::map(names(formals(Phi_fn)), function(x) args[x])
+        Phi <- do.call(iterspace$eqfns$Phi_fn, args_short)
+        print("Phi")
+
+        print(Phi)
+        print("finish")
+        print(iterspace$jac_like$Phi_der_theta_fn)
+        Phi_der_theta <- iterspace$jac_like$Phi_der_theta_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!iterspace$parameters)
+        print("finish")
+        Phi_der_lambda <- iterspace$jac_like$Phi_der_lambda_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!iterspace$parameters)
+        Psi_der_theta <- iterspace$jac_like$Psi_der_theta_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!iterspace$parameters)
         iterapce$update_delta$theta <- -1 * solve(Phi_der_theta + Phi_der_lambda * solve(Psi_der_lambda, Psi_der_theta), Phi)
 
-        Psi <- iterspace$eqfns$Psi_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!parameters)
-        Psi_der_lambda <- iterspace$jac_like$Phi_der_theta_fn(theta = iterspace$parameters$theta, lambda = iterspace$lambda, !!!parameters)
+        Psi <- iterspace$eqfns$Psi_fn(theta = iterspace$parameters$theta, lambda = iterspace$parameters$lambda, !!!iterspace$parameters)
+        Psi_der_lambda <- iterspace$jac_like$Phi_der_theta_fn(theta = iterspace$parameters$theta, lambda = iterspace$lambda, !!!iterspace$parameters)
         iterapce$update_delta$lambda <- -1 * solve(Psi_der_lambda, Psi)
         iterspace$parameters$theta <<- theta + iterapce$update_delta$theta
         iterspace$parameters$lambda <<- lambda + iterapce$update_delta$lambda
@@ -62,6 +72,10 @@ update.iterspace.IPHM <- function(iterspace) {
         iterspace$parameters$theta <<- theta + iterapce$update_delta$theta
         iterspace$parameters$lambda <<- lambda + iterapce$update_delta$lambda
         return(small_update(iterapce$update_delta$theta, iterspace$tol) && small_update(iterapce$update_delta$lambda, iterspace$tol))
+}
+
+update.default <- function(iterspace) {
+        stop("must be one of the iterspace type")
 }
 
 savestats <- function(savespace, iterspace, step) {
