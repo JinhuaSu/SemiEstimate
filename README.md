@@ -14,7 +14,12 @@ function factory + s3
 
 ## Todo list
 
-2021.7.26
+### 2021.8.4
+
+- Nice chance to find the simulation results as liu yang pick
+- add the oxygen doc and the pdf doc
+
+### 2021.7.26
 
 - read R package and run a simple package pick
 - remove the unessary part of my package and run it

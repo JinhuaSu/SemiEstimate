@@ -34,10 +34,10 @@ new_quasijac <- function(Phi_fn = function(theta, lambda, ...) NULL,
                          Psi_fn = function(theta, lambda, ...) NULL) {
         stopifnot(is.function(Phi_fn))
         stopifnot(is.function(Psi_fn))
-        Phi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Phi_fn(theta = x, lambda = lambda, ...), x = theta)
-        Phi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Phi_fn(theta = theta, lambda = x, ...), x = lambda)
-        Psi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Psi_fn(theta = x, lambda = lambda, ...), x = theta)
-        Psi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Psi_fn(theta = theta, lambda = x, ...), x = lambda)
+        Phi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Phi_fn(theta = x, lambda = lambda, alpha = alpha), x = theta)
+        Phi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Phi_fn(theta = theta, lambda = x, alpha = alpha), x = lambda)
+        Psi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Psi_fn(theta = x, lambda = lambda, alpha = alpha), x = theta)
+        Psi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Psi_fn(theta = theta, lambda = x, alpha = alpha), x = lambda)
         data <- list(
                 Phi_der_theta_fn = Phi_der_theta_fn,
                 Phi_der_lambda_fn = Phi_der_lambda_fn,
