@@ -47,7 +47,7 @@ update.iterspace.IPAT <- function(iterspace) {
         Phi_der_lambda <- easy_call(iterspace$jac_like$Phi_der_lambda_fn, args)
         Psi_der_theta <- easy_call(iterspace$jac_like$Psi_der_theta_fn, args)
         Psi_der_lambda <- easy_call(iterspace$jac_like$Psi_der_lambda_fn, args)
-        iterspace$update_delta$theta <- -1 * solve(Phi_der_theta + Phi_der_lambda * solve(Psi_der_lambda, Psi_der_theta), Phi)
+        iterspace$update_delta$theta <- -1 * solve(Phi_der_theta - Phi_der_lambda * solve(Psi_der_lambda, Psi_der_theta), Phi)
 
         args$theta <- args$theta + iterspace$update_delta$theta
 

@@ -268,7 +268,7 @@ global <- function(init, f, delta, Z, KC, N, p) {
 }
 
 # simulation
-nrep <- 20 # 100
+nrep <- 100 # 100
 N <- 1000
 p <- 10
 beta0 <- c(0.7, 0.7, 0.7, -0.5, -0.5, -0.5, 0.3, 0.3, 0.3, 0)
@@ -296,9 +296,9 @@ for (i in 1:nrep) {
         ## out_it <- iterative(dat$delta, dat$Z, KC)
         intermediates.it <- list(hC = lambda0, beta = theta0)
         # out_ip <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, hC = hC, beta = beta, Psi_der_lambda = Psi_der_lambda, Psi_der_theta = Psi_der_theta, Phi = Phi, Phi_der_theta = Phi_der_theta, Phi_der_lambda = Phi_der_lambda, theta_Hess = theta_Hess, theta_delta = theta_delta, Psi = Psi, Psi_der_lambda2 = Psi_der_lambda2, lambda_delta = lambda_delta, intermediates = intermediates)
-        out_ip <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, Zd = Zd, run_time = run_time.ip, theta_delta = theta_delta.ip, lambda_delta = lambda_delta.ip, intermediates = intermediates.ip)
+        out_ip <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, Zd = Zd, run_time = run_time.ip, theta_delta = theta_delta.ip, lambda_delta = lambda_delta.ip, intermediates = intermediates.ip, control = list(max_iter = 100, tol = 1e-7))
         # style 1 -> style 2
-        out_it <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "iterative", diy = TRUE, Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, Zd = Zd, run_time = run_time.it, theta_delta = theta_delta.it, lambda_delta = lambda_delta.it, intermediates = intermediates.it)
+        out_it <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "iterative", diy = TRUE, Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, Zd = Zd, run_time = run_time.it, theta_delta = theta_delta.it, lambda_delta = lambda_delta.it, intermediates = intermediates.it, control = list(max_iter = 100, tol = 1e-7))
         # style 2
         ## mse_global <- mse_global + sum((out_global$Model$x[1:p] - beta0)^2)
         mse_IP <- mse_IP + sum((out_ip$theta - beta0)^2)
@@ -317,6 +317,16 @@ apply(step, 2, mean)
 (mse_IP <- mse_IP / nrep)
 (mse_IT <- mse_IT / nrep)
 
+
+# > apply(time, 2, mean)
+# [1]  0.839407 14.227783
+# > apply(step, 2, mean)
+# [1]  9.25 17.77
+# > ## (mse_global <- mse_global / nrep)
+# > (mse_IP <- mse_IP / nrep)
+# [1] 0.1110877
+# > (mse_IT <- mse_IT / nrep)
+# [1] 0.1110877
 
 
 # 计算Psi和Phi

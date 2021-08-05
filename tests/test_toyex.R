@@ -9,7 +9,7 @@
 # provided jocabiean and mathematical
 Phi_fn <- function(theta, lambda, alpha) 2 * theta + alpha * lambda
 Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
-res <- semislv(1, 1, Phi_fn, Psi_fn,method = "implicit", alpha = 1)
+res <- semislv(1, 1, Phi_fn, Psi_fn, method = "implicit", alpha = 1)
 res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", alpha = 1)
 res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "iterative", alpha = 1)
 
@@ -55,6 +55,7 @@ run_Ip <- function(intermediates, theta, lambda, alpha) {
         y <- lambda
         yscore <- 2 * y + alpha * x
         intermediates$y_delta <- -yscore / 2 # IP lambda迭代式
+        y <- y + intermediates$y_delta
         xscore <- 2 * x + alpha * y
         intermediates$x_delta <- -2 * xscore / (4 - alpha^2) # IP theta迭代式
         intermediates
@@ -75,8 +76,9 @@ run_It <- function(intermediates, theta, lambda, alpha) {
         y <- lambda
         yscore <- 2 * y + alpha * x
         intermediates$y_delta <- -yscore / 2 # IP lambda迭代式
+        y <- y + intermediates$y_delta
         xscore <- 2 * x + alpha * y
-        intermediates$x_delta <- -2 * xscore / (4 - alpha^2) # IP theta迭代式
+        intermediates$x_delta <- -xscore / 2 #-2 * xscore / (4 - alpha^2) # IP theta迭代式
         intermediates
 }
 
@@ -119,10 +121,11 @@ for (k in c(0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8)) {
                         Newton_fit <- Newton(beta0, alpha)
                         ## It_fit = It(beta0, alpha)
                         ## Ip_fit = Ip(beta0, alpha)
-                        ## Ip_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", jacobian = TRUE, alpha = alpha)
-                        Ip_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, method = "implicit", diy = TRUE, run_Ip = run_Ip, theta_delta = theta_delta, lambda_delta = lambda_delta, alpha = alpha)
+                        Ip_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", alpha = alpha,control = list(max_iter = 100, tol = 1e-7))
+                        # Ip_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, method = "implicit", diy = TRUE, run_Ip = run_Ip, theta_delta = theta_delta_Ip, lambda_delta = lambda_delta_Ip, alpha = alpha, control = list(max_iter = 100, tol = 1e-7))
                         Ip_fit <- get_fit_from_raw(Ip_raw_fit)
-                        It_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "iterative", jacobian = TRUE, alpha = alpha)
+                        It_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "iterative", alpha = alpha,control = list(max_iter = 100, tol = 1e-7))
+                        # It_raw_fit <- semislv(theta = beta0[1], lambda = beta0[2], Phi_fn, Psi_fn, method = "iterative", diy = TRUE, run_Ip = run_It, theta_delta = theta_delta_It, lambda_delta = lambda_delta_It, alpha = alpha, control = list(max_iter = 100, tol = 1e-7))
                         It_fit <- get_fit_from_raw(It_raw_fit)
                         sub_step[, ii] <- c(Newton_fit$step, It_fit$step, Ip_fit$step)
                         k1[[ii]] <- Newton_fit$series
@@ -152,16 +155,16 @@ for (i in 1:10) {
         print(apply(s, 1, mean))
 }
 
-# [1] 1 2 2
-# [1] 1.00 3.78 3.00
-# [1] 1.00 4.38 3.00
-# [1] 1.00 5.22 3.00
-# [1] 1.00 6.25 3.00
-# [1] 1.00 7.48 3.00
-# [1] 1.00 9.38 3.00
-# [1]  1.00 12.29  3.00
-# [1]  1.00 17.88  3.00
-# [1]  1.0 34.6  3.0
+# [1] 1 1 1
+# [1] 1.00 4.78 2.00
+# [1] 1.00 6.19 2.00
+# [1] 1.00 7.95 2.00
+# [1]  1.00 10.28  2.00
+# [1]  1.00 13.19  2.00
+# [1]  1.0 17.4  2.0
+# [1]  1.0 24.2  2.0
+# [1]  1.00 37.55  2.00
+# [1]  1.00 77.32  2.00
 
 k <- step_all[[9]]
 k <- lapply(k, apply, 1, mean)
@@ -172,13 +175,13 @@ for (i in 1:10) {
 print(s)
 
 #       [,1] [,2] [,3]
-#  [1,]    1 14.4    3
-#  [2,]    1 16.2    3
-#  [3,]    1 17.1    3
-#  [4,]    1 17.5    3
-#  [5,]    1 18.2    3
-#  [6,]    1 18.4    3
-#  [7,]    1 18.9    3
-#  [8,]    1 19.2    3
-#  [9,]    1 19.4    3
-# [10,]    1 19.5    3
+#  [1,]    1 34.2    2
+#  [2,]    1 35.6    2
+#  [3,]    1 36.5    2
+#  [4,]    1 37.2    2
+#  [5,]    1 37.9    2
+#  [6,]    1 38.2    2
+#  [7,]    1 38.4    2
+#  [8,]    1 38.9    2
+#  [9,]    1 39.2    2
+# [10,]    1 39.4    2
