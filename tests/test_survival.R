@@ -44,21 +44,6 @@ lambda0 <- rep(0, n)
 intermediates <- list(
         hC = lambda0,
         beta = theta0,
-        dif = NULL,
-        hCd = NULL,
-        lp = NULL,
-        gij = NULL,
-        wZbar = NULL,
-        tmp = NULL,
-        hscore = NULL,
-        hHess = NULL,
-        Zbar_up = NULL,
-        Z_bar = NULL,
-        gi = NULL,
-        bscore = NULL,
-        part1 = NULL,
-        part2 = NULL,
-        theta_Hess = NULL
 )
 hC <- function(intermediates, lambda) {
         intermediates$hC <- lambda

@@ -14,6 +14,11 @@ function factory + s3
 
 ## Todo list
 
+- add the pdf doc pick done
+- debug for the basic experiments
+- give a simple outline for liuyang to do the after writing
+- to solve alpha problem for the simple case
+
 ### 2021.8.4
 
 - Nice chance to find the simulation results as liu yang pick

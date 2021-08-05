@@ -38,8 +38,9 @@ semislv <- function(theta, lambda, Phi_fn, Psi_fn, jac = list(), intermediates =
         t0 <- Sys.time()
         for (i in 1:control$max_iter) {
                 iterspace <- update(iterspace)
-                savespace <- savestats(iterspace = iterspace, savespace = savespace, step = i)
+                savespace <- savestats(iterspace = iterspace, savespace = savespace, step = i - 1)
                 if (iterspace$iter_over) break
+                # TODO(sujinhua): to unify the results
         }
         savespace$run.time <- Sys.time() - t0
         return(savespace)

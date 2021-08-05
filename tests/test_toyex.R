@@ -10,8 +10,8 @@
 Phi_fn <- function(theta, lambda, alpha) 2 * theta + alpha * lambda
 Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
 res <- semislv(1, 1, Phi_fn, Psi_fn,method = "implicit", alpha = 1)
-res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", jacobian = TRUE, alpha = 1)
-res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "iterative", jacobian = TRUE, alpha = 1)
+res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", alpha = 1)
+res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "iterative", alpha = 1)
 
 Newton <- function(beta0, alpha) {
         H_GS <- matrix(c(2, alpha, alpha, 2), nrow = 2, ncol = 2) # Hessian Matrix
@@ -60,12 +60,32 @@ run_Ip <- function(intermediates, theta, lambda, alpha) {
         intermediates
 }
 
-theta_delta <- function(intermediates) {
+theta_delta_Ip <- function(intermediates) {
         intermediates$theta_delta <- intermediates$x_delta
         intermediates
 }
 
-lambda_delta <- function(intermediates) {
+lambda_delta_Ip <- function(intermediates) {
+        intermediates$lambda_delta <- intermediates$y_delta
+        intermediates
+}
+
+run_It <- function(intermediates, theta, lambda, alpha) {
+        x <- theta
+        y <- lambda
+        yscore <- 2 * y + alpha * x
+        intermediates$y_delta <- -yscore / 2 # IP lambda迭代式
+        xscore <- 2 * x + alpha * y
+        intermediates$x_delta <- -2 * xscore / (4 - alpha^2) # IP theta迭代式
+        intermediates
+}
+
+theta_delta_It <- function(intermediates) {
+        intermediates$theta_delta <- intermediates$x_delta
+        intermediates
+}
+
+lambda_delta_It <- function(intermediates) {
         intermediates$lambda_delta <- intermediates$y_delta
         intermediates
 }

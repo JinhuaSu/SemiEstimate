@@ -28,9 +28,11 @@ update.iterspace.ITAT <- function(iterspace) {
         Psi_der_lambda <- easy_call(iterspace$jac_like$Psi_der_lambda_fn, args)
         iterspace$update_delta$lambda <- -1 * solve(Psi_der_lambda, Psi)
 
-        iterspace$parameters$theta <- iterspace$parameters$theta + iterspace$update_delta$theta
-        iterspace$parameters$lambda <- iterspace$parameters$lambda + iterspace$update_delta$lambda
         iterspace$iter_over <- small_update(iterspace$update_delta$theta, iterspace$tol) && small_update(iterspace$update_delta$lambda, iterspace$tol)
+        if (!iterspace$iter_over) {
+                iterspace$parameters$theta <- iterspace$parameters$theta + iterspace$update_delta$theta
+                iterspace$parameters$lambda <- iterspace$parameters$lambda + iterspace$update_delta$lambda
+        }
         return(iterspace)
 }
 
@@ -53,9 +55,11 @@ update.iterspace.IPAT <- function(iterspace) {
         Psi_der_lambda <- easy_call(iterspace$jac_like$Psi_der_lambda_fn, args)
         iterspace$update_delta$lambda <- -1 * solve(Psi_der_lambda, Psi)
 
-        iterspace$parameters$theta <- iterspace$parameters$theta + iterspace$update_delta$theta
-        iterspace$parameters$lambda <- iterspace$parameters$lambda + iterspace$update_delta$lambda
         iterspace$iter_over <- small_update(iterspace$update_delta$theta, iterspace$tol) && small_update(iterspace$update_delta$lambda, iterspace$tol)
+        if (!iterspace$iter_over) {
+                iterspace$parameters$theta <- iterspace$parameters$theta + iterspace$update_delta$theta
+                iterspace$parameters$lambda <- iterspace$parameters$lambda + iterspace$update_delta$lambda
+        }
         return(iterspace)
 }
 
@@ -74,11 +78,13 @@ update.iterspace.IPHM <- function(iterspace) {
         iterspace$update_delta$lambda <- intermediates$lambda_delta
         fn_args$theta <- fn_args$theta + iterspace$update_delta$theta
         fn_args$lambda <- fn_args$lambda + iterspace$update_delta$lambda
-        iterspace$parameters$theta <- fn_args$theta
-        iterspace$parameters$lambda <- fn_args$lambda
         iterspace$iter_over <- small_update(iterspace$update_delta$theta, iterspace$tol) && small_update(iterspace$update_delta$lambda, iterspace$tol)
-        iterspace$jac_like$fn_args <- fn_args
-        iterspace$jac_like$intermediates <- intermediates
+        if (!iterspace$iter_over) {
+                iterspace$parameters$theta <- fn_args$theta
+                iterspace$parameters$lambda <- fn_args$lambda
+                iterspace$jac_like$fn_args <- fn_args
+                iterspace$jac_like$intermediates <- intermediates
+        }
         return(iterspace)
 }
 
