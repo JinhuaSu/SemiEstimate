@@ -23,10 +23,9 @@ new_jac <- function(Phi_der_theta_fn = function(theta, lambda, ...) NULL,
                 Psi_der_theta_fn = Psi_der_theta_fn,
                 Psi_der_lambda_fn = Psi_der_lambda_fn
         )
-        x <- structure(data,
+        structure(data,
                 class = "jac"
         )
-        x
 }
 
 
@@ -34,10 +33,11 @@ new_quasijac <- function(Phi_fn = function(theta, lambda, ...) NULL,
                          Psi_fn = function(theta, lambda, ...) NULL) {
         stopifnot(is.function(Phi_fn))
         stopifnot(is.function(Psi_fn))
-        Phi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Phi_fn(theta = x, lambda = lambda, alpha = alpha), x = theta)
-        Phi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Phi_fn(theta = theta, lambda = x, alpha = alpha), x = lambda)
-        Psi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Psi_fn(theta = x, lambda = lambda, alpha = alpha), x = theta)
-        Psi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) Psi_fn(theta = theta, lambda = x, alpha = alpha), x = lambda)
+
+        Phi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) easy_call(Phi_fn, rlang::dots_list(theta = x, lambda = lambda, !!!list(...), .homonyms = "first")), x = theta)
+        Phi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) easy_call(Phi_fn, rlang::dots_list(theta = theta, lambda = x, !!!list(...), .homonyms = "first")), x = lambda)
+        Psi_der_theta_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) easy_call(Psi_fn, rlang::dots_list(theta = x, lambda = lambda, !!!list(...), .homonyms = "first")), x = theta)
+        Psi_der_lambda_fn <- function(theta, lambda, ...) numDeriv::jacobian(func = function(x) easy_call(Phi_fn, rlang::dots_list(theta = theta, lambda = x, !!!list(...), .homonyms = "first")), x = lambda)
         data <- list(
                 Phi_der_theta_fn = Phi_der_theta_fn,
                 Phi_der_lambda_fn = Phi_der_lambda_fn,

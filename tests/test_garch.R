@@ -508,9 +508,9 @@ while (i <= 1000) {
         ##   ip.fit = IP_GARCH_BB(y, init = init, sigma_1 = 0.1, judge_k = T)
         theta0 <- c(0, 0, 0)
         lambda0 <- rep(0, N)
-        ip_raw <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, data = y, IP_GARCH_BB = IP_GARCH_BB, theta_delta = theta_delta, lambda_delta = lambda_delta)
-        ip.fit <- get_result_from_raw(ip_raw)
-        if (bf.fit$judge_covergence & spmbp.fit$judge_covergence & ip.fit$judge_covergence) {
+        ip_raw <- try(semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, data = y, IP_GARCH_BB = IP_GARCH_BB, theta_delta = theta_delta, lambda_delta = lambda_delta))
+        if (class(ip_raw) != "try-error" & bf.fit$judge_covergence & spmbp.fit$judge_covergence) {
+                ip.fit <- get_result_from_raw(ip_raw)
                 result1[, i] <- bf.fit$beta
                 time1[i] <- bf.fit$run.time
                 iter1[i] <- bf.fit$iter

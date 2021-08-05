@@ -14,10 +14,14 @@ function factory + s3
 
 ## Todo list
 
+### 2021.8.5
+
 - add the pdf doc pick done
-- debug for the basic experiments
+- debug for the basic experiments done
+- fix the BBoptim done
+- to solve alpha problem for the simple case done
 - give a simple outline for liuyang to do the after writing
-- to solve alpha problem for the simple case
+- add some check and automatic test
 
 ### 2021.8.4
 
