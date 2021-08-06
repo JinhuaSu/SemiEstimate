@@ -22,9 +22,8 @@ semislv <- function(theta, lambda, Phi_fn, Psi_fn, jac = list(), intermediates =
         } else if (length(jac) == 4) {
                 jac_like <- do.call(new_jac, jac)
         } else {
-                jac$Phi_fn <- Phi_fn
-                jac$Psi_fn <- Psi_fn
-                jac_like <- do.call(new_semijac, jac)
+                args <- rlang::dots_list(Phi_fn = Phi_fn, Psi_fn = Psi_fn, !!!jac, !!!list(...), .homonyms = "first")
+                jac_like <- do.call(new_semijac, args)
         }
         ## jac_like is only a function with class called jac
         initials <- list(...)
