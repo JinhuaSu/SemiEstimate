@@ -1,5 +1,7 @@
 # SemiEstimate
 
+author: JinhuaSu
+
 ## designer
 
 S3 usage
