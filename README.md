@@ -20,8 +20,8 @@ function factory + s3
 - debug for the basic experiments done
 - fix the BBoptim done
 - to solve alpha problem for the simple case done
-- give a simple outline for liuyang to do the after writing
-- add some check and automatic test
+- give a simple outline for liuyang to do the after writing doing
+- add some check and automatic test: add basic test
 
 ### 2021.8.4
 
