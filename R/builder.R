@@ -53,19 +53,18 @@ new_quasijac <- function(Phi_fn = function(theta, lambda, ...) NULL,
 new_semijac <- function(Phi_fn = function(theta, lambda, ...) NULL, Psi_fn = function(theta, lambda, ...) NULL, ...) {
         stopifnot(is.function(Phi_fn))
         stopifnot(is.function(Psi_fn))
-        ## quasijac <- do.call(new_quasijac, dots_list(Phi_fn = Phi_fn, Psi_fn = Psi_fn, !!!list(...)))
         quasijac <- new_quasijac(Phi_fn = Phi_fn, Psi_fn = Psi_fn, ...)
         der_name_list <- c("Phi_der_theta_fn", "Phi_der_lambda_fn", "Psi_der_theta_fn", "Psi_der_lambda_fn")
         args <- list(...)
-        quasi_names <- list()
-        purrr::map(der_name_list, function(x) if (x %in% names(args)) eval(parse(text = paste("args$", x, "<<-", "quasijac$", x, ";quasi_names<<-", x))))
+        quasi_names <- c()
+        purrr::map(der_name_list, function(x) if (!(x %in% names(args))) eval(parse(text = paste("args$", x, "<<-", "quasijac$", x, ";quasi_names<<-c(quasi_names,'", x, "')"))))
         data <- list(
                 Phi_der_theta_fn = args$Phi_der_theta_fn,
                 Phi_der_lambda_fn = args$Phi_der_lambda_fn,
                 Psi_der_theta_fn = args$Psi_der_theta_fn,
                 Psi_der_lambda_fn = args$Psi_der_lambda_fn
         )
-        if (length(quasi_names) == 0) {
+        if (length(quasi_names) == 4) {
                 quasijac
         } else {
                 structure(

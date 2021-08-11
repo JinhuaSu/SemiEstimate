@@ -420,6 +420,7 @@ IP_GARCH_BB <- function(intermediates, data, theta) {
         ## result$run.time <- run.time
         ## result$step <- step
         ## result$judge_covergence <- judge_covergence
+        intermediates$iter <- init_out$iter
         intermediates
 }
 
@@ -428,8 +429,8 @@ get_result_from_raw <- function(raw_fit) {
         result$beta <- raw_fit$theta
         result$sigma <- raw_fit$parameters$lambda
         result$run.time <- raw_fit$run.time
-        result$iter <- raw_fit$step
-        result$judge_covergence <- raw_fit$step < 100
+        result$iter <- ip_raw$iterspace$jac_like$intermediates$iter
+        result$judge_covergence <- result$iter < 500
         result
 }
 
@@ -480,7 +481,7 @@ Psi_fn <- function(theta, lambda) NULL
 data <- series_gen(100, 1, c(0, 0, 0), 1)
 theta0 <- c(0.1, 0.1, 0.1)
 lambda0 <- rep(0, 100)
-semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, data = data, IP_GARCH_BB = IP_GARCH_BB, theta_delta = theta_delta, lambda_delta = lambda_delta, control = list(max_iter = 1, tol = 1e-5))
+res <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", diy = TRUE, data = data, IP_GARCH_BB = IP_GARCH_BB, theta_delta = theta_delta, lambda_delta = lambda_delta, control = list(max_iter = 2, tol = 1e-5))
 
 
 N <- 500
