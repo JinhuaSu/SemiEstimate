@@ -28,6 +28,8 @@ semislv(
 
 \item{jac}{a list containing some of deterivate info of Phi_der_theta_fn, Psi_der_theta_fn, Phi_der_lambda_fn, Psi_der_lambda_fn,}
 
+\item{intermediates}{a list containing the important variables for diy mode}
+
 \item{method}{"implicit" or "iterative"}
 
 \item{diy}{a bool value to decide to parse user designed function}

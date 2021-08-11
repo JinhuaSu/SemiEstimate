@@ -5,6 +5,7 @@
 #' @param Phi_fn the equation function highly relevant to the parametric part
 #' @param Psi_fn the equation function highly relevant to the non-parametric part
 #' @param jac a list containing some of deterivate info of Phi_der_theta_fn, Psi_der_theta_fn, Phi_der_lambda_fn, Psi_der_lambda_fn,
+#' @param intermediates a list containing the important variables for diy mode
 #' @param method "implicit" or "iterative"
 #' @param diy a bool value to decide to parse user designed function
 #' @param control a list like list(max_iter = 100, tol = 1e-3) to control the early stop

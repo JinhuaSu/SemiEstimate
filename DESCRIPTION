@@ -1,15 +1,14 @@
 Package: SemiEstimate
-Title: What the Package Does (One Line, Title Case)
+Title: Solve Semi-parametric Estimation by Implicit Profiling
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Jinhua",
+           family = "Su",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+           email = "944866518@qq.com",
+           comment = c(ORCID = "0000-0002-6344-0607"))
+Description: Solve Semi-parametric estimation by implicit profiling.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -17,6 +16,9 @@ RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
+    numDeriv,
+    purrr,
+    rlang,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
