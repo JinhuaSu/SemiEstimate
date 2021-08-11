@@ -1,6 +1,10 @@
 validate_fn <- function(fn) {
         arg_names <- names(formals(fn))
-        ("lambda" %in% arg_names && "theta" %in% arg_names) ? TRUE:FALSE
+        if ("lambda" %in% arg_names && "theta" %in% arg_names) {
+                TRUE
+        } else {
+                FALSE
+        }
 }
 
 validate_eqfns <- function(x) {
