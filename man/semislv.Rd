@@ -11,9 +11,10 @@ semislv(
   Psi_fn,
   jac = list(),
   intermediates = list(),
-  method = c("iterative", "implicit"),
+  method = "implicit",
   diy = FALSE,
   control = list(max_iter = 100, tol = 0.001),
+  save = list(time = FALSE, path = FALSE),
   ...
 )
 }
@@ -36,6 +37,8 @@ semislv(
 
 \item{control}{a list like list(max_iter = 100, tol = 1e-3) to control the early stop}
 
+\item{save}{a list like list(time = FALSE, path = FALSE) to control saving setting}
+
 \item{...}{static parameter for Phi_fn, Psi_fn. Diy execution function.}
 }
 \value{
@@ -48,8 +51,8 @@ Solve Semi-parametric estimation by implicit profiling
 Phi_fn <- function(theta, lambda, alpha) 2 * theta + alpha * lambda
 Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
 # build quasi jacobiean by package NumDeriv
-res <- semislv(1, 1, Phi_fn, Psi_fn, method = "implicit", alpha = 1)
-res <- semislv(1, 1, Phi_fn, Psi_fn, method = "implicit", alpha = 1)
+res <- semislv(1, 1, Phi_fn, Psi_fn, alpha = 1)
+res <- semislv(1, 1, Phi_fn, Psi_fn, method = "interative", alpha = 1)
 # parsing all mathematical jacobean function by user
 res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(
         Phi_der_theta_fn = function(theta, lambda, alpha) 2,

@@ -6,7 +6,9 @@ new_eqfns <- function(Phi_fn = function(theta, lambda, ...) NULL,
         stopifnot(is.function(Phi_fn))
         stopifnot(is.function(Psi_fn))
         data <- list(Phi_fn = Phi_fn, Psi_fn = Psi_fn)
-        structure(data, class = "eqfns")
+        eqfns <- structure(data, class = "eqfns")
+        validate_eqfns(eqfns)
+        eqfns
 }
 
 new_jac <- function(Phi_der_theta_fn = function(theta, lambda, ...) NULL,
@@ -23,9 +25,11 @@ new_jac <- function(Phi_der_theta_fn = function(theta, lambda, ...) NULL,
                 Psi_der_theta_fn = Psi_der_theta_fn,
                 Psi_der_lambda_fn = Psi_der_lambda_fn
         )
-        structure(data,
+        jac <- structure(data,
                 class = "jac"
         )
+        validate_jac(jac)
+        jac
 }
 
 
@@ -44,10 +48,12 @@ new_quasijac <- function(Phi_fn = function(theta, lambda, ...) NULL,
                 Psi_der_theta_fn = Psi_der_theta_fn,
                 Psi_der_lambda_fn = Psi_der_lambda_fn
         )
-        structure(
+        quasijac <- structure(
                 data,
                 class = "quasijac"
         )
+        validate_quasijac(quasijac)
+        quasijac
 }
 
 new_semijac <- function(Phi_fn = function(theta, lambda, ...) NULL, Psi_fn = function(theta, lambda, ...) NULL, ...) {
@@ -67,10 +73,12 @@ new_semijac <- function(Phi_fn = function(theta, lambda, ...) NULL, Psi_fn = fun
         if (length(quasi_names) == 4) {
                 quasijac
         } else {
-                structure(
+                semijac <- structure(
                         data,
                         quasi_names = quasi_names, class = "semijac"
                 )
+                validate_semijac(semijac)
+                semijac
         }
 }
 
@@ -102,10 +110,12 @@ new_diyjac <- function(intermediates, theta, lambda, method, ...) {
                 return_fn <- function(itermediates) list(Phi_der_theta = intermediates$Phi_der_theta, Psi_der_lambda = intermediates$Psi_der_lambda, Phi = intermediates$Phi, Psi = intermediates$Psi)
         }
         data <- list(ordered_fn = ordered_fn, intermediates = intermediates, fn_args = fn_args, return_fn = return_fn)
-        structure(
+        diyjac <- structure(
                 data,
                 class = "diyjac"
         )
+        validate_diyjac(diyjac)
+        diyjac
 }
 
 get_subclass <- function(method, jac_class) {
@@ -119,13 +129,12 @@ new_iterspace <- function(initials = list(), Phi_fn, Psi_fn, jac_like, control) 
         stopifnot("lambda" %in% names(initials))
         stopifnot("method" %in% names(initials))
         sub_class_name <- get_subclass(initials$method, class(jac_like))
-        eqfns <- list(Phi_fn = Phi_fn, Psi_fn = Psi_fn)
+        eqfns <- new_eqfns(Phi_fn = Phi_fn, Psi_fn = Psi_fn)
         data <- list(initials = initials, eqfns = eqfns, jac_like = jac_like, iter_step = 0, iter_over = FALSE, update_delta = list(theta = NULL, lambda = NULL), parameters = list(lambda = initials$lambda, theta = initials$theta), control = control)
         structure(data, class = paste("iterspace.", sub_class_name, sep = ""))
 }
 
-new_savespace <- function(save.path = FALSE, ...) {
-        data <- list(save.path = save.path, save.time = FALSE, save.der = FALSE, cache = list(...), res_path = list())
-        # save.time = save.time, save.der = save.der,
+new_savespace <- function(save.path = FALSE, save.time = FALSE, ...) {
+        data <- list(save.path = save.path, save.time = save.time, cache = list(...), res_path = list())
         structure(data, class = "savespace")
 }

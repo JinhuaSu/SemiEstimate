@@ -9,14 +9,15 @@
 #' @param method "implicit" or "iterative"
 #' @param diy a bool value to decide to parse user designed function
 #' @param control a list like list(max_iter = 100, tol = 1e-3) to control the early stop
+#' @param save a list like list(time = FALSE, path = FALSE) to control saving setting
 #' @param ...  static parameter for Phi_fn, Psi_fn. Diy execution function.
 #' @return A save space containing final iteration result and iteration path
 #' @examples
 #' Phi_fn <- function(theta, lambda, alpha) 2 * theta + alpha * lambda
 #' Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
 #' # build quasi jacobiean by package NumDeriv
-#' res <- semislv(1, 1, Phi_fn, Psi_fn, method = "implicit", alpha = 1)
-#' res <- semislv(1, 1, Phi_fn, Psi_fn, method = "implicit", alpha = 1)
+#' res <- semislv(1, 1, Phi_fn, Psi_fn, alpha = 1)
+#' res <- semislv(1, 1, Phi_fn, Psi_fn, method = "interative", alpha = 1)
 #' # parsing all mathematical jacobean function by user
 #' res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(
 #'         Phi_der_theta_fn = function(theta, lambda, alpha) 2,
@@ -42,7 +43,10 @@
 #' # use diy = True, then the package will be just a wrapper for your personalise code
 #' # diy is an advanced mode for researchers, see more examples in our vigettee documents
 #' @export
-semislv <- function(theta, lambda, Phi_fn, Psi_fn, jac = list(), intermediates = list(), method = c("iterative", "implicit"), diy = FALSE, control = list(max_iter = 100, tol = 1e-3), ...) {
+semislv <- function(theta, lambda, Phi_fn, Psi_fn, jac = list(), intermediates = list(), method = "implicit", diy = FALSE, control = list(max_iter = 100, tol = 1e-3), save = list(time = FALSE, path = FALSE), ...) {
+        validate_method(method)
+        validate_save(save)
+        validate_control(control)
         if (diy) {
                 args <- rlang::dots_list(theta = theta, lambda = lambda, method = method, intermediates = intermediates, !!!list(...), .homonyms = "first")
                 jac_like <- do.call(new_diyjac, args)
@@ -60,13 +64,12 @@ semislv <- function(theta, lambda, Phi_fn, Psi_fn, jac = list(), intermediates =
 
         iterspace <- new_iterspace(initials = initials, Phi_fn = Phi_fn, Psi_fn = Psi_fn, jac_like = jac_like, control = control)
         iterspace$tol <- control$tol
-        savespace <- new_savespace(save.path = TRUE)
+        savespace <- new_savespace(save.path = save$path, save.time = save$time)
         t0 <- Sys.time()
         for (i in 1:control$max_iter) {
                 iterspace <- update(iterspace)
                 if (iterspace$iter_over) break
                 savespace <- savestats(iterspace = iterspace, savespace = savespace, step = i)
-                # TODO(sujinhua): to unify the results
         }
         savespace$run.time <- Sys.time() - t0
         return(savespace)

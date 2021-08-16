@@ -16,6 +16,13 @@ function factory + s3
 
 ## Todo list
 
+### 2021.8.16
+
+- check the description done
+- add liuyang code for the vignettes part translate the rmd or comment some done
+- add basic test for validation pick
+- write a paragraph
+
 ### 2021.8.5
 
 - add the pdf doc pick done
