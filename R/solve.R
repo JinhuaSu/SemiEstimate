@@ -17,7 +17,7 @@
 #' Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
 #' # build quasi jacobiean by package NumDeriv
 #' res <- semislv(1, 1, Phi_fn, Psi_fn, alpha = 1)
-#' res <- semislv(1, 1, Phi_fn, Psi_fn, method = "interative", alpha = 1)
+#' res <- semislv(1, 1, Phi_fn, Psi_fn, method = "iterative", alpha = 1)
 #' # parsing all mathematical jacobean function by user
 #' res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(
 #'         Phi_der_theta_fn = function(theta, lambda, alpha) 2,
