@@ -97,6 +97,7 @@ savestats <- function(savespace, iterspace, step) {
         savespace$step <- step
         savespace$iterspace <- iterspace
         savespace$theta <- iterspace$parameters$theta
+        savespace$lambda <- iterspace$parameters$lambda
         if (savespace$save.path) {
                 savespace$res_path[[step]] <- iterspace
         }
