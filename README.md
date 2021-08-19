@@ -2,19 +2,22 @@
 
 author: JinhuaSu
 
+## breif introduction
+
+Semi-parametric estimation problem can be solved by two-step Newton-Raphson iteration. The implicit Profiling method(our arXiv paper with the title of "Implicit Profiling Estimation for Semiparametric Models with Bundled Parameters" is available at https://arxiv.org/abs/2108.07928.) is an improved method of two-step NR iteration especially for the implicit-bundled type of the parametric part and non-parametric part. This package provides a function semislv() supporting the above two methods and numeric derivative approximation for unprovided Jacobian matrix.
 ## designer
 
-S3 usage
+- S3 usage
 
-functional object
+- functional object
 
-there is a global varible s3 -> final result
+- there is a global varible s3 -> final result
 
-there are different small function to modify it
+- there are different small function to modify it
 
-function factory + s3
+- function factory + s3
 
-## Todo list
+## develop log
 
 ### 2021.8.16
 
