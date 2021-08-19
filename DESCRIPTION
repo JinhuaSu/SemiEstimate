@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "944866518@qq.com",
            comment = c(ORCID = "0000-0002-6344-0607"))
-Description: Semi-parametric estimation problem can be solved by two-step Newton-Raphson iteration. The implicit Profiling method(our arXiv paper with the title of "Implicit Profiling Estimation for Semiparametric Models with Bundled Parameters" is available at https://arxiv.org/abs/2108.07928.) is an improved method of two-step NR iteration especially for the implicit-bundled type of the parametric part and non-parametric part. This package provides a function semislv() supporting the above two methods and numeric derivative approximation for unprovided Jacobian matrix.
+Description: Semi-parametric estimation problem can be solved by two-step Newton-Raphson iteration. The implicit profiling method<arXiv:2108.07928> is an improved method of two-step NR iteration especially for the implicit-bundled type of the parametric part and non-parametric part. This package provides a function semislv() supporting the above two methods and numeric derivative approximation for unprovided Jacobian matrix.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
