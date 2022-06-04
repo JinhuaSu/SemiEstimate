@@ -1,6 +1,6 @@
 Package: SemiEstimate
 Title: Solve Semi-Parametric Estimation by Implicit Profiling
-Version: 1.1.3
+Version: 1.1.4
 Authors@R: 
     person(given = "Jinhua",
            family = "Su",

@@ -1,0 +1,643 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{QuickStart}
+\author{}
+\date{\vspace{-2.5em}}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={QuickStart},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+This document is a quick start for users who have no time for reading
+our paper. We will will use a current status example for teaching how to
+run the code with learning the least annoying mathematical formulas.
+
+\hypertarget{installation}{%
+\subsection{Installation}\label{installation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the stable version(release)}
+\CommentTok{\# install.packages("SemiEstimate")}
+\CommentTok{\# the latest version(dev)}
+\CommentTok{\# install.packages("devtools")}
+\CommentTok{\# devtools::install\_github("JinhuaSu/SemiEstimate")}
+\FunctionTok{library}\NormalTok{(SemiEstimate)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{generate-demo-data}{%
+\subsection{Generate Demo Data}\label{generate-demo-data}}
+
+We generate a fake data on a example of current status semiparametric
+model. The semi-parametric model can be estimated by solving the
+following equations. \(C\) is censoring time and \(\delta\) is the
+status variable. The \(K_h\) is Gaussian kernel function. The \(Z\) is
+the covariable vector and the fixed-length vector \(\beta\) is the
+parameter we needed, while the nonparametric function and its value
+\(h(C)\) on the certain point is less do not matter.
+
+\[
+\sum_{j=1}^{n} K_{h}\left(C_{j}-C_{i}\right)\left[\delta_{j}-\pi\left\{h\left(C_{i}\right)+\boldsymbol{\beta}^{\top} \mathbf{Z}_{j}\right\}\right]=0
+\]
+
+\[
+n^{-1} \sum_{i=1}^{n} \mathbf{Z}_{i}\left[\delta_{i}-\pi\left\{h\left(C_{i}\right)+\boldsymbol{\beta}^{\top} \mathbf{Z}_{i}\right\}\right]=0
+\] The simulation data is generated using the given
+\(\beta = (0.7,0.7,0.7,-0.5,-0.5,-0.5,0.3,0.3,0.3,0)\) and nonparametric
+function \(T = h^{-1} (g^{-1}(u) - \beta'Z)\), where
+\(h(x) = 3*log(x/4)\) is and \(g(x)=exp(x)/(exp(x)+1)\). \(Z\) is
+generated with multi-normal distribution with 0.2 correlation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# package.install("MASS")}
+\FunctionTok{require}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: MASS
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sim.gen.STM }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(n,p,beta0,sigmaZ,}\AttributeTok{Nperturb=}\DecValTok{0}\NormalTok{)}
+\NormalTok{\{}
+\NormalTok{  Z }\OtherTok{=} \FunctionTok{mvrnorm}\NormalTok{(n,}\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,p),sigmaZ}\SpecialCharTok{\^{}}\DecValTok{2}\SpecialCharTok{*}\NormalTok{(}\FloatTok{0.2+0.8}\SpecialCharTok{*}\FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{,p)))}
+\NormalTok{  u }\OtherTok{=} \FunctionTok{runif}\NormalTok{(n)}
+\NormalTok{  T }\OtherTok{=} \FunctionTok{exp}\NormalTok{((}\FunctionTok{log}\NormalTok{(u}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{u)) }\SpecialCharTok{{-}}\NormalTok{ Z}\SpecialCharTok{\%*\%}\NormalTok{beta0)}\SpecialCharTok{/}\DecValTok{3}\NormalTok{)}\SpecialCharTok{*}\DecValTok{4} \CommentTok{\#h\^{}{-}1 (g\^{}{-}1(u) {-} beta\textquotesingle{}Z)}
+\NormalTok{  C }\OtherTok{=} \FunctionTok{runif}\NormalTok{(n,}\DecValTok{0}\NormalTok{,}\DecValTok{12}\NormalTok{)}
+\NormalTok{  delta }\OtherTok{=}\NormalTok{ (T}\SpecialCharTok{\textless{}=}\NormalTok{C)}
+  
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{delta =}\NormalTok{ delta, }\AttributeTok{C =}\NormalTok{ C, }
+              \AttributeTok{Z =}\NormalTok{ Z))}
+\NormalTok{\}}
+
+\NormalTok{n }\OtherTok{=} \DecValTok{100}
+\NormalTok{p }\OtherTok{=} \DecValTok{3}
+\NormalTok{beta0}\OtherTok{=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.7}\NormalTok{,}\FloatTok{0.7}\NormalTok{,}\FloatTok{0.7}\NormalTok{)}
+\NormalTok{sigmaZ }\OtherTok{=} \DecValTok{1}
+
+\NormalTok{Nrep }\OtherTok{=} \DecValTok{10000}
+
+\CommentTok{\# Data generation}
+\NormalTok{dat }\OtherTok{=} \FunctionTok{sim.gen.STM}\NormalTok{(n,p,beta0,sigmaZ)}
+\NormalTok{dat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $delta
+##         [,1]
+##   [1,] FALSE
+##   [2,]  TRUE
+##   [3,]  TRUE
+##   [4,]  TRUE
+##   [5,] FALSE
+##   [6,] FALSE
+##   [7,]  TRUE
+##   [8,] FALSE
+##   [9,]  TRUE
+##  [10,]  TRUE
+##  [11,]  TRUE
+##  [12,] FALSE
+##  [13,]  TRUE
+##  [14,] FALSE
+##  [15,] FALSE
+##  [16,] FALSE
+##  [17,]  TRUE
+##  [18,]  TRUE
+##  [19,]  TRUE
+##  [20,] FALSE
+##  [21,]  TRUE
+##  [22,]  TRUE
+##  [23,]  TRUE
+##  [24,] FALSE
+##  [25,]  TRUE
+##  [26,]  TRUE
+##  [27,]  TRUE
+##  [28,]  TRUE
+##  [29,]  TRUE
+##  [30,] FALSE
+##  [31,]  TRUE
+##  [32,]  TRUE
+##  [33,]  TRUE
+##  [34,]  TRUE
+##  [35,]  TRUE
+##  [36,]  TRUE
+##  [37,] FALSE
+##  [38,] FALSE
+##  [39,]  TRUE
+##  [40,]  TRUE
+##  [41,]  TRUE
+##  [42,]  TRUE
+##  [43,] FALSE
+##  [44,]  TRUE
+##  [45,]  TRUE
+##  [46,] FALSE
+##  [47,] FALSE
+##  [48,] FALSE
+##  [49,]  TRUE
+##  [50,]  TRUE
+##  [51,] FALSE
+##  [52,] FALSE
+##  [53,]  TRUE
+##  [54,]  TRUE
+##  [55,] FALSE
+##  [56,] FALSE
+##  [57,]  TRUE
+##  [58,]  TRUE
+##  [59,]  TRUE
+##  [60,] FALSE
+##  [61,]  TRUE
+##  [62,]  TRUE
+##  [63,]  TRUE
+##  [64,]  TRUE
+##  [65,]  TRUE
+##  [66,]  TRUE
+##  [67,]  TRUE
+##  [68,] FALSE
+##  [69,]  TRUE
+##  [70,] FALSE
+##  [71,]  TRUE
+##  [72,]  TRUE
+##  [73,] FALSE
+##  [74,]  TRUE
+##  [75,] FALSE
+##  [76,]  TRUE
+##  [77,] FALSE
+##  [78,] FALSE
+##  [79,]  TRUE
+##  [80,] FALSE
+##  [81,] FALSE
+##  [82,] FALSE
+##  [83,]  TRUE
+##  [84,] FALSE
+##  [85,] FALSE
+##  [86,]  TRUE
+##  [87,]  TRUE
+##  [88,]  TRUE
+##  [89,]  TRUE
+##  [90,] FALSE
+##  [91,]  TRUE
+##  [92,] FALSE
+##  [93,] FALSE
+##  [94,] FALSE
+##  [95,]  TRUE
+##  [96,]  TRUE
+##  [97,]  TRUE
+##  [98,] FALSE
+##  [99,]  TRUE
+## [100,]  TRUE
+## 
+## $C
+##   [1]  0.5665205  6.3871212  4.7456638 11.7198967  4.8567396  8.1586978
+##   [7]  6.7344313  0.3695658  9.7156289  9.8150983  7.9594327  2.3693349
+##  [13]  6.4526521  7.8652836  3.5410469  0.2788257  3.9396214  4.1970130
+##  [19]  6.4331838  2.4499086  9.4878607  8.0925295 11.2515058  5.1552211
+##  [25]  9.9298744 10.3354046 11.8939282  8.9767185 11.3021507  6.3271849
+##  [31]  4.7256876  6.6397327  9.7981587  8.0301219  5.9080040  4.2992970
+##  [37]  2.6740505  0.6537787  8.3442365  8.4797103 10.0248603  2.2461322
+##  [43]  8.3506316  8.4782997  3.9588392 11.6456313  3.6415232  0.2842660
+##  [49] 10.7950203 10.4489960  2.0842076  1.1630020 10.5217491 11.9736594
+##  [55]  3.9274180  6.1479092  9.5080550 10.3898820  7.7108373  2.1612390
+##  [61]  4.3391553 10.5046403  8.5340781  6.3457607 11.3250527  3.9217085
+##  [67] 11.2751037  3.5842378  7.5516439  5.0712484  9.3146126  3.4377093
+##  [73]  1.0434272 11.1133333  4.2986649  6.0399106  2.1924604  0.1328046
+##  [79]  9.9684562  0.6124921  0.9095714  3.3646503  8.4285897  7.6354817
+##  [85]  2.9458719  9.7432101  7.5924593 11.7339344  5.3596398  7.5246351
+##  [91] 10.4339860  7.0426758  7.7260449  6.2949400  6.5416275  6.2547131
+##  [97]  6.7574480  2.5476396  5.9419818  7.9145312
+## 
+## $Z
+##               [,1]         [,2]         [,3]
+##   [1,]  1.72507617  0.935554001  0.395658891
+##   [2,] -0.19419466 -1.290346275  0.855999820
+##   [3,] -3.05795770 -0.491795747 -0.909440224
+##   [4,]  0.02499578 -0.912068277 -1.521189469
+##   [5,] -1.73029042 -0.222317096  0.276485895
+##   [6,] -1.77895658 -0.698484613 -1.866316910
+##   [7,]  1.11402775  1.694986152 -0.043320541
+##   [8,] -1.72127453 -1.478334562  0.024892527
+##   [9,] -0.44347594 -0.629897779 -2.157975706
+##  [10,] -0.51855112  1.483079888  0.119263160
+##  [11,]  1.42888176 -0.630977015  1.196795114
+##  [12,]  0.48939981 -0.696925629  1.349119399
+##  [13,] -0.49495171 -0.280261501  0.460500716
+##  [14,] -1.47184115 -0.993606585 -1.791713463
+##  [15,]  1.12185284  0.065497759  1.125207377
+##  [16,]  0.05718558  0.690773260  0.254715909
+##  [17,] -0.10053330 -0.624472511  1.703000716
+##  [18,]  0.40108079  0.960545601  0.176965082
+##  [19,] -0.10986151  0.112512955  0.038111646
+##  [20,]  0.66200961 -2.450084134  1.979825735
+##  [21,] -0.38234264  0.349740121  1.422328996
+##  [22,]  0.80247433  0.528799698 -0.044347694
+##  [23,] -1.05475184 -0.145297119 -0.324216317
+##  [24,] -2.88884172 -0.197313497 -0.216893776
+##  [25,]  0.04449461  0.761772783  0.768146402
+##  [26,]  0.17961120  0.046878477 -0.607850266
+##  [27,] -1.15490098  0.280257013 -0.034659263
+##  [28,]  0.13279231  1.930741310 -0.161216453
+##  [29,]  0.34565080  0.112918665  0.836936767
+##  [30,] -2.15279948 -0.596469220 -0.499697510
+##  [31,]  1.98226795 -0.222055343 -0.279190764
+##  [32,] -0.84792343 -0.671806134 -1.247695257
+##  [33,]  0.67724669  1.490860606  1.208431594
+##  [34,] -2.16811143 -1.967403939 -0.002478164
+##  [35,]  0.83023713 -0.377796868  0.321767240
+##  [36,]  0.65212816  0.368704122 -0.234879469
+##  [37,]  0.59031199 -1.335093555 -1.379563041
+##  [38,] -1.45893772 -0.334022621 -0.232423159
+##  [39,]  0.08522079  0.318459345 -0.022966457
+##  [40,]  0.93250213 -0.313621707  0.371683549
+##  [41,]  0.60978923 -1.844005917 -0.062643192
+##  [42,]  0.41914736 -0.361720551  0.487923475
+##  [43,] -1.23040026  0.100887262  1.354751547
+##  [44,]  0.90000188 -0.461835733 -0.725454934
+##  [45,] -0.60039715  0.279391034  0.016126633
+##  [46,] -0.09082769 -0.961430991 -1.912140966
+##  [47,] -0.63336837  0.392909932 -0.143654463
+##  [48,]  0.90968958  2.052369659 -0.125050058
+##  [49,]  0.39077867  0.007808855  0.378119481
+##  [50,]  0.31965562  0.095315709 -0.175765130
+##  [51,] -1.36035426 -0.625849683 -0.640271449
+##  [52,]  0.05602402 -0.749047804  1.223935946
+##  [53,] -0.24021804 -0.432917646 -1.856803950
+##  [54,] -0.20145513 -0.312076425  0.201171019
+##  [55,] -0.70390232 -2.591347858 -1.449462173
+##  [56,] -1.42459003 -0.961648255  0.720826180
+##  [57,] -1.36833694  0.400813973 -0.096829745
+##  [58,]  0.75558088 -0.111947016  1.247001631
+##  [59,]  0.80437627  0.050749194  0.207837749
+##  [60,] -0.45878187 -0.955603366  0.093935720
+##  [61,]  0.23310086  0.097972563  1.480021315
+##  [62,] -1.35359068 -0.799035848  0.216822036
+##  [63,]  2.01895372  1.447466086  0.738210767
+##  [64,] -1.31763222 -0.222338347 -1.103623261
+##  [65,]  0.95819038  1.218394807  1.350398006
+##  [66,] -0.96650190  0.246378882 -0.037869208
+##  [67,]  1.86046409  0.700271651  1.035253410
+##  [68,]  0.03286872 -0.137650359 -0.332701731
+##  [69,] -1.08109688 -1.550354641  1.038585032
+##  [70,] -0.48998385 -0.625783053 -1.093042022
+##  [71,]  1.36331334  0.688727111  1.727021849
+##  [72,]  0.70404394  0.808251117  0.655127703
+##  [73,] -0.85312750 -0.207351765  2.659746389
+##  [74,] -0.36791305 -0.270421209 -0.126835577
+##  [75,] -0.57170059 -0.598652649 -1.379281418
+##  [76,]  0.42842441  1.118864542  0.908555296
+##  [77,] -0.15570461  0.496530380  0.691981818
+##  [78,]  0.09230353  0.863572904 -0.922655544
+##  [79,]  0.63764195  0.213774033  0.817442493
+##  [80,]  0.55647204 -0.949782697 -0.437625550
+##  [81,]  0.65314735  0.409792961 -1.046514354
+##  [82,] -0.50707492 -1.970475097 -1.911007253
+##  [83,]  0.49669485 -1.697857864  0.186453690
+##  [84,] -0.44054140 -0.616673776  0.568861521
+##  [85,]  0.15615820 -1.501279137 -0.003371397
+##  [86,]  1.47954714 -1.134794240  1.082453653
+##  [87,]  0.13051822 -1.674462226 -0.888920281
+##  [88,]  1.42609455 -0.869824630  0.471880182
+##  [89,] -0.02507585 -0.644052137 -0.292127799
+##  [90,] -1.58962110 -0.633150503 -0.399644614
+##  [91,] -1.46402345 -0.038787038  0.956290424
+##  [92,] -0.38458822 -1.480332574 -1.326395944
+##  [93,] -1.10039393 -0.051173208 -1.800972629
+##  [94,]  0.15021899 -0.424048522 -0.304376887
+##  [95,]  0.67552281 -0.824469456 -0.444204391
+##  [96,]  0.15344144 -0.055792932 -0.160201532
+##  [97,] -0.28416635  0.499712173  0.598448260
+##  [98,]  0.76881666  0.423636173  1.721311207
+##  [99,] -0.59248338  0.788684016 -0.565727705
+## [100,]  0.72917011 -0.557904223  0.635097557
+\end{verbatim}
+
+Prepare the fixed intermediate data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h }\OtherTok{=} \FunctionTok{sd}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{C)}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{sum}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{delta))}\SpecialCharTok{\^{}}\FloatTok{0.25}
+\NormalTok{KC }\OtherTok{=} \FunctionTok{dnorm}\NormalTok{(}\FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{dist}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{C}\SpecialCharTok{/}\NormalTok{h,}\AttributeTok{diag=}\NormalTok{T,}\AttributeTok{upper=}\NormalTok{T)))}\SpecialCharTok{/}\NormalTok{h}
+\CommentTok{\# KC is 100 * 100 matric for quick find the Kh(Cj{-}Ci)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{easiest-but-not-most-efficient-method}{%
+\subsection{Easiest but not most efficient
+method}\label{easiest-but-not-most-efficient-method}}
+
+Only define the equation function for Theta and Lambda. All the gradient
+expression will be calculated with numerical calculation methods.
+
+For using our package, the least work you need to do is to find the
+parametric part \(\theta\) and non-parametric part \(\lambda\) and
+rewrite the equation function containing both \(\theta\) and
+\(\lambda\). Under EM setting, we note the score equation from M step as
+\(\phi(\theta,\lambda)\), and \(\psi(\theta,\lambda)\) is the equation
+from E step update.
+
+As for above generated current status data, the target functions
+\(\phi\) and \(\psi\) are listed here:
+
+\[\phi_i(\theta,\lambda)= \sum_{i=1}^{n} \mathbf{Z}_{i}\left[\delta_{i}-\pi\left\{\lambda_i+\boldsymbol{\theta}^{\top} \mathbf{Z}_{i}\right\}\right]\]
+
+\[\psi(\theta,\lambda)=\sum_{j=1}^{n} K_{h}\left(C_{j}-C_{i}\right)\left[\delta_{j}-\pi\left\{\lambda_i+\boldsymbol{\theta}^{\top} \mathbf{Z}_{j}\right\}\right]\]
+
+It is really easy to find \(\phi\) and \(psi\) for survival analysis
+cases. If you do not know the e step and m step, there is a easy way to
+determine which is \(\phi\) and which is \(\psi\). \(\phi\) calculate a
+vector with the same length of parametric part \(\theta\), while
+\(\psi\) calculate a vector with the same length of parametric part
+\(\lambda\).
+
+Indeed, as long as you encounter two equations for solving the model and
+they are hard to be integrated into one, you may encounter the
+semi-parametric problem. Please take the code and have a try.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# define two function with theta and lambda as first two input parameter.}
+\NormalTok{lambda0 }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, n)}
+\CommentTok{\# for quick search demo, we initial the beta with real value}
+\NormalTok{theta0 }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,p)}
+\NormalTok{Phi\_fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, lambda, Z, delta) \{}
+\NormalTok{  Pi }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{return}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{x)))}
+\NormalTok{  psi }\OtherTok{\textless{}{-}}\NormalTok{ (delta }\SpecialCharTok{{-}} \FunctionTok{Pi}\NormalTok{(Z }\SpecialCharTok{\%*\%}\NormalTok{ theta }\SpecialCharTok{+}\NormalTok{ lambda))[,}\DecValTok{1}\NormalTok{] }\SpecialCharTok{\%*\%}\NormalTok{ Z}
+\NormalTok{  psi }\OtherTok{\textless{}{-}}\NormalTok{ psi[}\DecValTok{1}\NormalTok{,]}
+  \FunctionTok{return}\NormalTok{(psi)}
+\NormalTok{\}}
+\NormalTok{Psi\_fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, lambda, Z, KC, delta) \{}
+\NormalTok{  Pi }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{return}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{x)))}
+\NormalTok{  right\_part }\OtherTok{=} \FunctionTok{sweep}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{Pi}\NormalTok{(}\FunctionTok{outer}\NormalTok{(lambda,}\SpecialCharTok{{-}}\NormalTok{Z }\SpecialCharTok{\%*\%}\NormalTok{ theta,}\StringTok{"+"}\NormalTok{)),}\DecValTok{2}\NormalTok{,}\SpecialCharTok{{-}}\NormalTok{delta)[,,}\DecValTok{1}\NormalTok{]}
+\NormalTok{  phi }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(delta)) \{}
+\NormalTok{    phi }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(phi, (right\_part[i,] }\SpecialCharTok{\%*\%}\NormalTok{ KC[i,])[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(phi)}
+\NormalTok{\}}
+\CommentTok{\# two step iterative method}
+\NormalTok{res\_it }\OtherTok{\textless{}{-}} \FunctionTok{semislv}\NormalTok{(}\AttributeTok{theta =}\NormalTok{ theta0, }\AttributeTok{lambda=}\NormalTok{ lambda0, }\AttributeTok{Phi\_fn =}\NormalTok{ Phi\_fn, }\AttributeTok{Psi\_fn =}\NormalTok{ Psi\_fn, }\AttributeTok{method =} \StringTok{"iterative"}\NormalTok{, }\AttributeTok{Z=}\NormalTok{dat}\SpecialCharTok{$}\NormalTok{Z, }\AttributeTok{KC=}\NormalTok{KC, }\AttributeTok{delta =}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta)}
+\CommentTok{\# our method: implicit profiling}
+\NormalTok{res\_ip }\OtherTok{\textless{}{-}} \FunctionTok{semislv}\NormalTok{(}\AttributeTok{theta =}\NormalTok{ theta0, }\AttributeTok{lambda=}\NormalTok{ lambda0, }\AttributeTok{Phi\_fn =}\NormalTok{ Phi\_fn, }\AttributeTok{Psi\_fn =}\NormalTok{ Psi\_fn, }\AttributeTok{method =} \StringTok{"implicit"}\NormalTok{, }\AttributeTok{Z=}\NormalTok{dat}\SpecialCharTok{$}\NormalTok{Z, }\AttributeTok{KC=}\NormalTok{KC, }\AttributeTok{delta =}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta)}
+\end{Highlighting}
+\end{Shaded}
+
+For speed up this part, the data generated is not too large. We compare
+our method result and result with iterative method. The \(\theta\)
+esitmated is really close. But our method is not competitive in total
+running time. However, our method use less iterative step for
+convergence. In next two part, we will show you how to speed up our
+method with some DIY work. That is to say, if you are not satisfied with
+this running time, you can go next and take some risk of making mistakes
+on calculate the Hessian Matrix or details. Notice,
+
+\hypertarget{diy-a-little-bit-hessian-matrix}{%
+\subsection{DIY a little bit: Hessian
+Matrix}\label{diy-a-little-bit-hessian-matrix}}
+
+For iterative method, you need provide the
+\(\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)\)
+and
+\(\frac{\partial}{\partial \boldsymbol{\lambda}} \boldsymbol{\psi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)\).
+In our method, the whole Hessian Matrix is needed for calculate the
+implicit gradient. That is to say, we need
+\(\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)\),
+\(\frac{\partial}{\partial \boldsymbol{\lambda}} \boldsymbol{\psi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)\),
+\(\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\psi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)\)
+and
+\(\frac{\partial}{\partial \boldsymbol{\lambda}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)\)
+for implicit profiling. Of course, you can only provide one or two of
+above expression, the unprovided will be calculated with numerical
+calculation method. Whatever, take the risk of providing the false
+expression.
+
+For less content in quick start, we only provide Phi\_der\_theta here
+for display:
+
+\[
+\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right) = \sum_{i=1}^{n} \mathbf{Z}_{i} \mathbf{Z}_{i}^{\top} \pi^{\prime}\left\{\lambda_{i}^{(k)}+\boldsymbol{\theta}^{(k) \top} \mathbf{Z}_{i}\right\}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for all provided function, notice the first two input parameter must be theta and lambda}
+\CommentTok{\# Phi\_der\_theta shape (p, p)}
+\NormalTok{Phi\_der\_theta }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, lambda, Z)\{}
+\NormalTok{  Pi\_der }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{    tmp }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{x)}
+    \FunctionTok{return}\NormalTok{(tmp}\SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+}\NormalTok{ tmp)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  matrix\_list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\NormalTok{  right\_part }\OtherTok{\textless{}{-}} \FunctionTok{Pi\_der}\NormalTok{((Z }\SpecialCharTok{\%*\%}\NormalTok{ theta)[,}\DecValTok{1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ lambda)}
+\NormalTok{  sum }\OtherTok{\textless{}{-}}\DecValTok{0} 
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(lambda)) \{}
+\NormalTok{    sum }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{+}\NormalTok{ Z[i,] }\SpecialCharTok{\%o\%}\NormalTok{ Z[i,] }\SpecialCharTok{*}\NormalTok{ right\_part[i]}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(sum)}
+\NormalTok{\}}
+\CommentTok{\# two step iterative method}
+\NormalTok{res\_it2 }\OtherTok{\textless{}{-}} \FunctionTok{semislv}\NormalTok{(}\AttributeTok{theta =}\NormalTok{ theta0, }\AttributeTok{lambda=}\NormalTok{ lambda0, }\AttributeTok{Phi\_fn =}\NormalTok{ Phi\_fn, }\AttributeTok{Psi\_fn =}\NormalTok{ Psi\_fn,}\AttributeTok{Phi\_der\_theta=}\NormalTok{ Phi\_der\_theta, }\AttributeTok{method =} \StringTok{"iterative"}\NormalTok{, }\AttributeTok{Z=}\NormalTok{dat}\SpecialCharTok{$}\NormalTok{Z, }\AttributeTok{KC=}\NormalTok{KC, }\AttributeTok{delta =}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta)}
+\CommentTok{\# our method: implicit profiling}
+\NormalTok{res\_ip2 }\OtherTok{\textless{}{-}} \FunctionTok{semislv}\NormalTok{(}\AttributeTok{theta =}\NormalTok{ theta0, }\AttributeTok{lambda=}\NormalTok{ lambda0, }\AttributeTok{Phi\_fn =}\NormalTok{ Phi\_fn, }\AttributeTok{Psi\_fn =}\NormalTok{ Psi\_fn,}\AttributeTok{Phi\_der\_theta=}\NormalTok{ Phi\_der\_theta, }\AttributeTok{method =} \StringTok{"implicit"}\NormalTok{, }\AttributeTok{Z=}\NormalTok{dat}\SpecialCharTok{$}\NormalTok{Z, }\AttributeTok{KC=}\NormalTok{KC, }\AttributeTok{delta =}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{diy-more-avoid-repeated-calculation}{%
+\subsection{DIY more: Avoid Repeated
+Calculation}\label{diy-more-avoid-repeated-calculation}}
+
+For building a generally useful package, we wrap the iteration pipeline
+and unavoidably let alone detailed calculation in Hessian Matrix. Risk
+and benefit coexist. There are many similar components for each element
+in Hessian Matrix. In our paper, we really DIY a lot for reduce repeated
+calculation. We use a list called intermediates to save the
+intermediates results that may be used again. To make sure that
+intermediates can be used in right order, you need parse your
+calculation function in order.
+
+If you find that the total time of implicit profiling method is worse
+than iterative method, you can implement the following code. With
+hessian matrix we calculate and avoiding repeated calculation, the speed
+change is really explicit. If you are not annoyed by mathematical
+formulas in this part, we recommand you to see the Code.rmd in
+vignettes, where the simulation results of our paper is placed there.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{expit }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(d) }\FunctionTok{return}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{d)))}
+
+\NormalTok{pi }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) }\DecValTok{1} \SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{x))}
+
+\NormalTok{Psi\_fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, lambda, delta, Z, KC) \{}
+\NormalTok{  line }\OtherTok{\textless{}{-}}\NormalTok{ Z }\SpecialCharTok{\%*\%}\NormalTok{ theta}
+\NormalTok{  reg }\OtherTok{\textless{}{-}} \FunctionTok{outer}\NormalTok{(lambda, line, }\StringTok{"+"}\NormalTok{)[, , }\DecValTok{1}\NormalTok{]}
+\NormalTok{  reg\_pi }\OtherTok{\textless{}{-}} \FunctionTok{pi}\NormalTok{(reg)}
+\NormalTok{  dif }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(delta) }\SpecialCharTok{{-}} \FunctionTok{t}\NormalTok{(reg\_pi)}
+  \FunctionTok{apply}\NormalTok{(Z }\SpecialCharTok{*} \FunctionTok{diag}\NormalTok{(dif), }\DecValTok{2}\NormalTok{, sum)}
+\NormalTok{\}}
+
+\NormalTok{Phi\_fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, lambda, delta, Z, KC) \{}
+\NormalTok{  line }\OtherTok{\textless{}{-}}\NormalTok{ Z }\SpecialCharTok{\%*\%}\NormalTok{ lambda}
+\NormalTok{  reg }\OtherTok{\textless{}{-}} \FunctionTok{outer}\NormalTok{(lambda, line, }\StringTok{"+"}\NormalTok{)[, , }\DecValTok{1}\NormalTok{]}
+\NormalTok{  reg\_pi }\OtherTok{\textless{}{-}} \FunctionTok{pi}\NormalTok{(reg)}
+\NormalTok{  dif }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(delta) }\SpecialCharTok{{-}} \FunctionTok{t}\NormalTok{(reg\_pi)}
+  \FunctionTok{apply}\NormalTok{(KC }\SpecialCharTok{*}\NormalTok{ dif, }\DecValTok{2}\NormalTok{, sum)}
+\NormalTok{\}}
+
+\NormalTok{run\_time.ip }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(intermediates, theta, lambda, delta, Z, KC, Zd, KCd) \{}
+\NormalTok{  beta }\OtherTok{\textless{}{-}}\NormalTok{ theta}
+\NormalTok{  hC }\OtherTok{\textless{}{-}}\NormalTok{ lambda}
+\NormalTok{  expit }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(d) \{}
+    \FunctionTok{return}\NormalTok{(}\DecValTok{1} \SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{d)))}
+\NormalTok{  \}}
+\NormalTok{  lp }\OtherTok{\textless{}{-}} \FunctionTok{drop}\NormalTok{(Z }\SpecialCharTok{\%*\%}\NormalTok{ beta)}
+\NormalTok{  gij }\OtherTok{\textless{}{-}} \FunctionTok{expit}\NormalTok{(}\FunctionTok{outer}\NormalTok{(hC, lp, }\StringTok{"+"}\NormalTok{))}
+\NormalTok{  tmp }\OtherTok{\textless{}{-}}\NormalTok{ KC }\SpecialCharTok{*}\NormalTok{ gij}
+\NormalTok{  wZbar }\OtherTok{\textless{}{-}}\NormalTok{ tmp }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ gij)}
+\NormalTok{  hscore }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(tmp, }\DecValTok{1}\NormalTok{, sum) }\SpecialCharTok{{-}}\NormalTok{ KCd}
+\NormalTok{  hHess }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(wZbar, }\DecValTok{1}\NormalTok{, sum)}
+  
+\NormalTok{  dhC }\OtherTok{\textless{}{-}}\NormalTok{ hscore }\SpecialCharTok{/}\NormalTok{ hHess}
+\NormalTok{  dhC }\OtherTok{\textless{}{-}} \FunctionTok{sign}\NormalTok{(dhC) }\SpecialCharTok{*} \FunctionTok{pmin}\NormalTok{(}\FunctionTok{abs}\NormalTok{(dhC), }\DecValTok{1}\NormalTok{)}
+\NormalTok{  intermediates}\SpecialCharTok{$}\NormalTok{dhC }\OtherTok{\textless{}{-}}\NormalTok{ dhC}
+\NormalTok{  hC }\OtherTok{\textless{}{-}}\NormalTok{ hC }\SpecialCharTok{{-}}\NormalTok{ dhC}
+\NormalTok{  Zbar }\OtherTok{\textless{}{-}}\NormalTok{ (wZbar }\SpecialCharTok{\%*\%}\NormalTok{ Z) }\SpecialCharTok{/}\NormalTok{ hHess}
+  
+\NormalTok{  gi }\OtherTok{\textless{}{-}} \FunctionTok{expit}\NormalTok{(hC }\SpecialCharTok{+}\NormalTok{ lp)}
+\NormalTok{  bscore }\OtherTok{\textless{}{-}} \FunctionTok{drop}\NormalTok{(}\FunctionTok{t}\NormalTok{(Z) }\SpecialCharTok{\%*\%}\NormalTok{ (delta }\SpecialCharTok{{-}}\NormalTok{ gi))}
+  
+\NormalTok{  bHess }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(gi }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ gi) }\SpecialCharTok{*}\NormalTok{ Z) }\SpecialCharTok{\%*\%}\NormalTok{ (Zbar }\SpecialCharTok{{-}}\NormalTok{ Z)}
+\NormalTok{  dinit }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(bHess, bscore)}
+  
+\NormalTok{  intermediates}\SpecialCharTok{$}\NormalTok{dinit }\OtherTok{\textless{}{-}}\NormalTok{ dinit}
+\NormalTok{  intermediates}
+\NormalTok{\}}
+
+\NormalTok{theta\_delta.ip }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(intermediates) \{}
+\NormalTok{  intermediates}\SpecialCharTok{$}\NormalTok{theta\_delta }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\NormalTok{intermediates}\SpecialCharTok{$}\NormalTok{dinit}
+\NormalTok{  intermediates}
+\NormalTok{\}}
+
+\NormalTok{lambda\_delta.ip }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(intermediates) \{}
+\NormalTok{  intermediates}\SpecialCharTok{$}\NormalTok{lambda\_delta }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\NormalTok{intermediates}\SpecialCharTok{$}\NormalTok{dhC}
+\NormalTok{  intermediates}
+\NormalTok{\}}
+\NormalTok{h }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{C) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{sum}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{delta))}\SpecialCharTok{\^{}}\FloatTok{0.25}
+\NormalTok{KC }\OtherTok{\textless{}{-}} \FunctionTok{dnorm}\NormalTok{(}\FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{dist}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{C }\SpecialCharTok{/}\NormalTok{ h, }\AttributeTok{diag =}\NormalTok{ T, }\AttributeTok{upper =}\NormalTok{ T))) }\SpecialCharTok{/}\NormalTok{ h}
+\NormalTok{KCd }\OtherTok{\textless{}{-}} \FunctionTok{drop}\NormalTok{(KC }\SpecialCharTok{\%*\%}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta)}
+\NormalTok{theta0 }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Z))}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Z)}
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{ncol}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Z)}
+\NormalTok{Zd }\OtherTok{\textless{}{-}} \FunctionTok{drop}\NormalTok{(}\FunctionTok{t}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{Z) }\SpecialCharTok{\%*\%}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta)}
+\NormalTok{lambda0 }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, n)}
+\NormalTok{intermediates.ip }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{hC =}\NormalTok{ lambda0, }\AttributeTok{beta =}\NormalTok{ theta0)}
+\NormalTok{intermediates.ip }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{hC =}\NormalTok{ lambda0, }\AttributeTok{beta =}\NormalTok{ theta0)}
+\NormalTok{res\_ip3 }\OtherTok{\textless{}{-}} \FunctionTok{semislv}\NormalTok{(}\AttributeTok{theta =}\NormalTok{ theta0, }\AttributeTok{lambda =}\NormalTok{ lambda0, }\AttributeTok{Phi\_fn =}\NormalTok{ Phi\_fn, }\AttributeTok{Psi\_fn =}\NormalTok{ Psi\_fn,}\AttributeTok{intermediates =}\NormalTok{ intermediates.ip, }\AttributeTok{method =} \StringTok{"implicit"}\NormalTok{, }\AttributeTok{diy =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{control =} \FunctionTok{list}\NormalTok{(}\AttributeTok{max\_iter =} \DecValTok{100}\NormalTok{, }\AttributeTok{tol =} \FloatTok{1e{-}7}\NormalTok{), }\AttributeTok{Z =}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{Z, }\AttributeTok{delta =}\NormalTok{ dat}\SpecialCharTok{$}\NormalTok{delta, }\AttributeTok{KC =}\NormalTok{ KC, }\AttributeTok{p =}\NormalTok{ p,}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{KCd =}\NormalTok{ KCd, }\AttributeTok{Zd =}\NormalTok{ Zd, }\AttributeTok{run\_time =}\NormalTok{ run\_time.ip, }\AttributeTok{theta\_delta =}\NormalTok{ theta\_delta.ip, }\AttributeTok{lambda\_delta =}\NormalTok{ lambda\_delta.ip)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
