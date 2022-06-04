@@ -114,7 +114,7 @@ new_diyjac <- function(intermediates, theta, lambda, method, ...) {
                 data,
                 class = "diyjac"
         )
-        validate_diyjac(diyjac)
+        validate_diyjac(diyjac$ordered_fn)
         diyjac
 }
 

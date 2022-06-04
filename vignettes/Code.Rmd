@@ -114,7 +114,9 @@ the naive iteration method and the implicit proling method.
 Phi_fn <- function(theta, lambda, alpha) 2 * theta + alpha * lambda
 Psi_fn <- function(theta, lambda, alpha) 2 * lambda + alpha * theta
 res <- semislv(1, 1, Phi_fn, Psi_fn, method = "implicit", alpha = 1)
+
 res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "implicit", alpha = 1)
+
 res <- semislv(1, 1, Phi_fn, Psi_fn, jac = list(Phi_der_theta_fn = function(theta, lambda, alpha) 2, Phi_der_lambda_fn = function(theta, lambda, alpha) alpha, Psi_der_theta_fn = function(theta, lambda, alpha) alpha, Psi_der_lambda_fn = function(theta, lambda, alpha) 2), method = "iterative", alpha = 1)
 
 Newton <- function(beta0, alpha) {
@@ -465,6 +467,7 @@ lambda_delta.it <- function(intermediates, lambda) {
 ## Simulation
 
 $N = 500$
+
 ```{r}
 #nrep <- 100 # 100
 #N <- 500

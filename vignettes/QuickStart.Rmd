@@ -1,0 +1,231 @@
+---
+title: "QuickStart"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This document is a quick start for users who have no time for reading our paper. We will will use a current status example for teaching how to run the code with learning the least annoying mathematical formulas.
+
+## Installation
+
+
+```{r}
+# the stable version(release)
+# install.packages("SemiEstimate")
+# the latest version(dev)
+# install.packages("devtools")
+# devtools::install_github("JinhuaSu/SemiEstimate")
+library(SemiEstimate)
+```
+
+## Generate Demo Data
+
+We generate a fake data on a example of current status semiparametric model. The semi-parametric model can be estimated by solving the following equations. $C$ is censoring time and $\delta$ is the status variable. The $K_h$ is Gaussian kernel function. The $Z$ is the covariable vector and the fixed-length vector $\beta$ is the parameter we needed, while the nonparametric function and its value $h(C)$ on the certain point is less do not matter.
+
+
+$$
+\sum_{j=1}^{n} K_{h}\left(C_{j}-C_{i}\right)\left[\delta_{j}-\pi\left\{h\left(C_{i}\right)+\boldsymbol{\beta}^{\top} \mathbf{Z}_{j}\right\}\right]=0
+$$
+
+$$
+n^{-1} \sum_{i=1}^{n} \mathbf{Z}_{i}\left[\delta_{i}-\pi\left\{h\left(C_{i}\right)+\boldsymbol{\beta}^{\top} \mathbf{Z}_{i}\right\}\right]=0
+$$
+The simulation data is generated using the given $\beta = (0.7,0.7,0.7,-0.5,-0.5,-0.5,0.3,0.3,0.3,0)$ and nonparametric function $T = h^{-1} (g^{-1}(u) - \beta'Z)$, where $h(x) = 3*log(x/4)$ is  and $g(x)=exp(x)/(exp(x)+1)$. $Z$ is generated with multi-normal distribution with 0.2 correlation.
+
+
+```{r}
+# package.install("MASS")
+require(MASS)
+sim.gen.STM = function(n,p,beta0,sigmaZ,Nperturb=0)
+{
+  Z = mvrnorm(n,rep(0,p),sigmaZ^2*(0.2+0.8*diag(1,p)))
+  u = runif(n)
+  T = exp((log(u/(1-u)) - Z%*%beta0)/3)*4 #h^-1 (g^-1(u) - beta'Z)
+  C = runif(n,0,12)
+  delta = (T<=C)
+  
+  return(list(delta = delta, C = C, 
+              Z = Z))
+}
+
+n = 100
+p = 3
+beta0=c(0.7,0.7,0.7)
+sigmaZ = 1
+
+Nrep = 10000
+
+# Data generation
+dat = sim.gen.STM(n,p,beta0,sigmaZ)
+dat
+```
+
+Prepare the fixed intermediate data.
+
+```{r}
+h = sd(dat$C)/(sum(dat$delta))^0.25
+KC = dnorm(as.matrix(dist(dat$C/h,diag=T,upper=T)))/h
+# KC is 100 * 100 matric for quick find the Kh(Cj-Ci)
+```
+
+
+## Easiest but not most efficient method
+
+Only define the equation function for Theta and Lambda. All the gradient expression will be calculated with numerical calculation methods.
+
+For using our package, the least work you need to do is to find the parametric part $\theta$ and non-parametric part $\lambda$ and rewrite the equation function containing both $\theta$ and $\lambda$. Under EM setting, we note the score equation from M step as $\phi(\theta,\lambda)$, and $\psi(\theta,\lambda)$ is the equation from E step update.
+
+As for above generated current status data, the target functions $\phi$ and $\psi$ are listed here:
+
+
+
+$$\phi_i(\theta,\lambda)= \sum_{i=1}^{n} \mathbf{Z}_{i}\left[\delta_{i}-\pi\left\{\lambda_i+\boldsymbol{\theta}^{\top} \mathbf{Z}_{i}\right\}\right]$$
+
+$$\psi(\theta,\lambda)=\sum_{j=1}^{n} K_{h}\left(C_{j}-C_{i}\right)\left[\delta_{j}-\pi\left\{\lambda_i+\boldsymbol{\theta}^{\top} \mathbf{Z}_{j}\right\}\right]$$
+
+It is really easy to find $\phi$ and $psi$ for survival analysis cases. If you do not know the e step and m step, there is a easy way to determine which is $\phi$ and which is $\psi$. $\phi$ calculate a vector with the same length of parametric part $\theta$, while $\psi$ calculate a vector with the same length of parametric part $\lambda$.
+
+Indeed, as long as you encounter two equations for solving the model and they are hard to be integrated into one, you may encounter the semi-parametric problem. Please take the code and have a try.
+
+```{r}
+# define two function with theta and lambda as first two input parameter.
+lambda0 <- rep(0, n)
+# for quick search demo, we initial the beta with real value
+theta0 <- rep(0,p)
+Phi_fn <- function(theta, lambda, Z, delta) {
+  Pi = function(x) return(1/(1 + exp(-x)))
+  psi <- (delta - Pi(Z %*% theta + lambda))[,1] %*% Z
+  psi <- psi[1,]
+  return(psi)
+}
+Psi_fn <- function(theta, lambda, Z, KC, delta) {
+  Pi = function(x) return(1/(1 + exp(-x)))
+  right_part = sweep(-Pi(outer(lambda,-Z %*% theta,"+")),2,-delta)[,,1]
+  phi <- c()
+  for(i in 1:length(delta)) {
+    phi <- c(phi, (right_part[i,] %*% KC[i,])[1,1])
+  }
+  return(phi)
+}
+# two step iterative method
+res_it <- semislv(theta = theta0, lambda= lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "iterative", Z=dat$Z, KC=KC, delta = dat$delta)
+# our method: implicit profiling
+res_ip <- semislv(theta = theta0, lambda= lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn, method = "implicit", Z=dat$Z, KC=KC, delta = dat$delta)
+```
+For speed up this part, the data generated is not too large. We compare our method result and result with iterative method. The $\theta$ esitmated is really close. But our method is not competitive in total running time. However, our method use less iterative step for convergence. In next two part, we will show you how to speed up our method with some DIY work. That is to say, if you are not satisfied with this running time, you can go next and take some risk of making mistakes on calculate the Hessian Matrix or details. Notice, 
+
+## DIY a little bit: Hessian Matrix
+
+For iterative method, you need provide the $\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)$ and $\frac{\partial}{\partial \boldsymbol{\lambda}} \boldsymbol{\psi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)$. In our method, the whole Hessian Matrix is needed for calculate the implicit gradient. That is to say, we need $\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)$, $\frac{\partial}{\partial \boldsymbol{\lambda}} \boldsymbol{\psi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)$, $\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\psi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)$ and $\frac{\partial}{\partial \boldsymbol{\lambda}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right)$ for implicit profiling. Of course, you can only provide one or two of above expression, the unprovided will be calculated with numerical calculation method. Whatever, take the risk of providing the false expression.
+
+
+For less content in quick start, we only provide Phi_der_theta here for display:
+
+$$
+\frac{\partial}{\partial \boldsymbol{\theta}} \boldsymbol{\phi}\left(\boldsymbol{\theta}^{(k)}, \boldsymbol{\lambda}^{(k)}\right) = \sum_{i=1}^{n} \mathbf{Z}_{i} \mathbf{Z}_{i}^{\top} \pi^{\prime}\left\{\lambda_{i}^{(k)}+\boldsymbol{\theta}^{(k) \top} \mathbf{Z}_{i}\right\}
+$$
+
+```{r}
+# for all provided function, notice the first two input parameter must be theta and lambda
+# Phi_der_theta shape (p, p)
+Phi_der_theta <- function(theta, lambda, Z){
+  Pi_der = function(x){
+    tmp <- exp(-x)
+    return(tmp/ (1 + tmp)^2)
+  }
+  matrix_list <- list()
+  right_part <- Pi_der((Z %*% theta)[,1] + lambda)
+  sum <-0 
+  for(i in 1:length(lambda)) {
+    sum <- sum + Z[i,] %o% Z[i,] * right_part[i]
+  }
+  return(sum)
+}
+# two step iterative method
+res_it2 <- semislv(theta = theta0, lambda= lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn,Phi_der_theta= Phi_der_theta, method = "iterative", Z=dat$Z, KC=KC, delta = dat$delta)
+# our method: implicit profiling
+res_ip2 <- semislv(theta = theta0, lambda= lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn,Phi_der_theta= Phi_der_theta, method = "implicit", Z=dat$Z, KC=KC, delta = dat$delta)
+```
+
+
+## DIY more: Avoid Repeated Calculation
+
+For building a generally useful package, we wrap the iteration pipeline and unavoidably let alone detailed calculation in Hessian Matrix. Risk and benefit coexist. There are many similar components for each element in Hessian Matrix. In our paper, we really DIY a lot for reduce repeated calculation. We use a list called intermediates to save the intermediates results that may be used again. To make sure that intermediates can be used in right order, you need parse your calculation function in order.
+
+If you find that the total time of implicit profiling method is worse than iterative method, you can implement the following code. With hessian matrix we calculate and avoiding repeated calculation, the speed change is really explicit. If you are not annoyed by mathematical formulas in this part, we recommand you to see the Code.rmd in vignettes, where the simulation results of our paper is placed there.
+
+```{r}
+expit = function(d) return(1/(1+exp(-d)))
+
+pi <- function(x) 1 / (1 + exp(-x))
+
+Psi_fn <- function(theta, lambda, delta, Z, KC, N, p) {
+  line <- Z %*% theta
+  reg <- outer(lambda, line, "+")[, , 1]
+  reg_pi <- pi(reg)
+  dif <- as.vector(delta) - t(reg_pi)
+  apply(Z * diag(dif), 2, sum)
+}
+
+Phi_fn <- function(theta, lambda, delta, Z, KC, N, p) {
+  line <- Z %*% lambda
+  reg <- outer(lambda, line, "+")[, , 1]
+  reg_pi <- pi(reg)
+  dif <- as.vector(delta) - t(reg_pi)
+  apply(KC * dif, 2, sum)
+}
+
+run_time.ip <- function(intermediates, theta, lambda, delta, Z, KC, Zd, KCd) {
+  beta <- theta
+  hC <- lambda
+  expit <- function(d) {
+    return(1 / (1 + exp(-d)))
+  }
+  lp <- drop(Z %*% beta)
+  gij <- expit(outer(hC, lp, "+"))
+  tmp <- KC * gij
+  wZbar <- tmp * (1 - gij)
+  hscore <- apply(tmp, 1, sum) - KCd
+  hHess <- apply(wZbar, 1, sum)
+  
+  dhC <- hscore / hHess
+  dhC <- sign(dhC) * pmin(abs(dhC), 1)
+  intermediates$dhC <- dhC
+  hC <- hC - dhC
+  Zbar <- (wZbar %*% Z) / hHess
+  
+  gi <- expit(hC + lp)
+  bscore <- drop(t(Z) %*% (delta - gi))
+  
+  bHess <- t(gi * (1 - gi) * Z) %*% (Zbar - Z)
+  dinit <- solve(bHess, bscore)
+  
+  intermediates$dinit <- dinit
+  intermediates
+}
+
+theta_delta.ip <- function(intermediates) {
+  intermediates$theta_delta <- -intermediates$dinit
+  intermediates
+}
+
+lambda_delta.ip <- function(intermediates) {
+  intermediates$lambda_delta <- -intermediates$dhC
+  intermediates
+}
+dat <- sim.gen.STM(N, p, beta0, sigmaZ) ## don't change
+h <- sd(dat$C) / (sum(dat$delta))^0.25
+KC <- dnorm(as.matrix(dist(dat$C / h, diag = T, upper = T))) / h
+KCd <- drop(KC %*% dat$delta)
+theta0 <- rep(0, ncol(dat$Z))
+n <- nrow(dat$Z)
+Zd <- drop(t(dat$Z) %*% dat$delta)
+lambda0 <- rep(0, n)
+intermediates.ip <- list(hC = lambda0, beta = theta0)
+intermediates.ip <- list(hC = lambda0, beta = theta0)
+res_ip3 <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn,intermediates = intermediates.ip, method = "implicit", diy = TRUE, control = list(max_iter = 100, tol = 1e-7), Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, Zd = Zd, run_time = run_time.ip, theta_delta = theta_delta.ip, lambda_delta = lambda_delta.ip)
+```
+
