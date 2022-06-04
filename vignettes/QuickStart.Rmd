@@ -162,7 +162,7 @@ expit = function(d) return(1/(1+exp(-d)))
 
 pi <- function(x) 1 / (1 + exp(-x))
 
-Psi_fn <- function(theta, lambda, delta, Z, KC, N, p) {
+Psi_fn <- function(theta, lambda, delta, Z, KC) {
   line <- Z %*% theta
   reg <- outer(lambda, line, "+")[, , 1]
   reg_pi <- pi(reg)
@@ -170,7 +170,7 @@ Psi_fn <- function(theta, lambda, delta, Z, KC, N, p) {
   apply(Z * diag(dif), 2, sum)
 }
 
-Phi_fn <- function(theta, lambda, delta, Z, KC, N, p) {
+Phi_fn <- function(theta, lambda, delta, Z, KC) {
   line <- Z %*% lambda
   reg <- outer(lambda, line, "+")[, , 1]
   reg_pi <- pi(reg)
@@ -216,16 +216,16 @@ lambda_delta.ip <- function(intermediates) {
   intermediates$lambda_delta <- -intermediates$dhC
   intermediates
 }
-dat <- sim.gen.STM(N, p, beta0, sigmaZ) ## don't change
 h <- sd(dat$C) / (sum(dat$delta))^0.25
 KC <- dnorm(as.matrix(dist(dat$C / h, diag = T, upper = T))) / h
 KCd <- drop(KC %*% dat$delta)
 theta0 <- rep(0, ncol(dat$Z))
 n <- nrow(dat$Z)
+p <- ncol(dat$Z)
 Zd <- drop(t(dat$Z) %*% dat$delta)
 lambda0 <- rep(0, n)
 intermediates.ip <- list(hC = lambda0, beta = theta0)
 intermediates.ip <- list(hC = lambda0, beta = theta0)
-res_ip3 <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn,intermediates = intermediates.ip, method = "implicit", diy = TRUE, control = list(max_iter = 100, tol = 1e-7), Z = dat$Z, delta = dat$delta, KC = KC, n = n, KCd = KCd, Zd = Zd, run_time = run_time.ip, theta_delta = theta_delta.ip, lambda_delta = lambda_delta.ip)
+res_ip3 <- semislv(theta = theta0, lambda = lambda0, Phi_fn = Phi_fn, Psi_fn = Psi_fn,intermediates = intermediates.ip, method = "implicit", diy = TRUE, control = list(max_iter = 100, tol = 1e-7), Z = dat$Z, delta = dat$delta, KC = KC, p = p,n = n, KCd = KCd, Zd = Zd, run_time = run_time.ip, theta_delta = theta_delta.ip, lambda_delta = lambda_delta.ip)
 ```
 
